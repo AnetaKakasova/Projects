@@ -1,0 +1,196 @@
+TM01: Zobrazení hlavního menu
+Popis: Ověření, zda program po spuštění zobrazí hlavní menu.
+Vstupní podmínky: 
+	1. K dispozici je program Task manager, který lze spustit.
+Kroky testu:
+	1. Spusť program Task manager.
+
+Očekávaný výsledek: 
+	1.Program po spuštění zavlá funkci main_menu() a je zobrazeno hlavní menu s funkcemi: 1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program.
+
+Výsledek testu: 
+	1. Funkce main_menu() je spuštěna a je zobrazeno hlavní menu se 4 funkcemi: 1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program.
+Stav: Pass
+
+
+TM02: Přidání úkolu s platným vstupem
+Popis: Ověření, zda lze přidat nový úkol, pokud je zadán platný vstup - název ani popis úkolu není prázdný.
+Vstupní podmínky: 
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+Kroky testu:
+	1. Vyber funkci "1. Přidat úkol" stisknutím čísla 1 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zadej platný název úkolu a potvrď klávesou Enter.
+	3. Zadej platný popis úkolu a potvrď klávesou Enter.
+Očekávaný výsledek: 
+	1. Po potvrzení výběru funkce pro přidání úkolu program zavolá funkci add_task() a zobrazí se výzva pro zadání názvu úkolu.
+	2. Platný název úkolu je zadán a po potvrzení klávesou Enter se zobrazí výzva pro zadání popisu úkolu.
+	3. Platný popis úkolu je zadán a po potvrzení klávesou Enter se zobrazí informace o přidání nového úkolu: Úkol 'název_úkolu - popis_úkolu' byl přidán.
+Výsledek testu: 
+	1. Výběr funkce pro přidání úkolu je potvrzen a je zobrazena výzva pro zadání názvu úkolu.
+	2. Platný název úkolu "Koupit chleba" je zadán a potvrzen klávesou Enter. Je zobrazena výzva pro zadání popisu úkolu.
+	3. Platný popis úkolu "celozrnný" je zadán a potvrzen klávesou Enter. Informace o úspěšném přidání nového úkolu je zobrazena: Úkol 'Koupit chleba - celozrnný' byl přidán.
+Stav: Pass
+
+
+TM03: Přidání úkolu s neplatným vstupem - prázdný název
+Popis: Ověření, že nelze přidat nový úkol s prázdným názvem.
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+Kroky testu: 
+	1. Vyber funkci "1. Přidat úkol" stisknutím čísla 1 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zadej neplatný (prázdný) název úkolu a potvrď klávesou Enter.
+	3. Zadej platný popis úkolu a potvrď klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro přidání úkolu program zavolá funkci add_task() a zobrazí se výzva pro zadání názvu úkolu.
+	2. Neplatný, tedy prázdný, název úkolu je zadán a potvrzen klávesou Enter. Je zobrazena výzva pro zadání popisu úkolu.
+	3. Platný popis úkolu je zadán a potvrzen klávesou Enter. Program upozorní uživatele, že zadal prázdný vstup a vyzve ho k opětovnému zadání názvu i popisu úkolu.
+Výsledek testu:
+	1. Výběr funkce pro přidání úkolu je potvrzen a je zobrazena výzva pro zadání názvu úkolu.
+	2. Není zadán žádný název úkolu a tento prázdný vstup je potvrzen klávesou Enter. Je zobrazena výzva pro zadání popisu úkolu.
+	3. Po zadání a potvrzení platného popisu úkolu upozorní program uživatele na neplatný vstup: Zadali jste prázdný vstup. Zadejte prosím znovu název úkolu i popis úkolu.
+Stav: Pass
+
+
+TM04: Přidání úkolu s neplatným vstupem - prázdný popis
+Popis: Ověření, že nelze přidat nový úkol s prázdným popisem.
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+Kroky testu: 
+	1. Vyber funkci "1. Přidat úkol" stisknutím čísla 1 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zadej platný název úkolu a potvrď klávesou Enter.
+	3. Zadej neplatný (prázdný) popis úkolu a potvrď klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro přidání úkolu program zavolá funkci add_task() a zobrazí se výzva pro zadání názvu úkolu.
+	2. Platný název úkolu je zadán a potvrzen klávesou Enter. Je zobrazena výzva pro zadání popisu úkolu.
+	3. Neplatný, tedy prázdný, popis úkolu je zadán a potvrzen klávesou Enter. Program upozorní uživatele, že zadal prázdný vstup a vyzve ho k opětovnému zadání názvu i popisu úkolu.
+Výsledek testu:
+	1. Výběr funkce pro přidání úkolu je potvrzen a je zobrazena výzva pro zadání názvu úkolu.
+	2. Platný název úkolu je zadán a potvrzen klávesou Enter. Je zobrazena výzva pro zadání popisu úkolu.
+	3. Po zadání a potvrzení neplatného popisu úkolu upozorní program uživatele na neplatný vstup: Zadali jste prázdný vstup. Zadejte prosím znovu název úkolu i popis úkolu.
+Stav: Pass
+
+
+TM05: Zobrazení seznamu úkolů
+Popis: Ověření, že Task manager správně zobrazí všechny úkoly
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+	2. Seznam úkolů není prázdný - seznam již obsahuje několik úkolů.
+Kroky testu:
+	1. Vyber funkci "2. Zobrazit všechny úkoly" stisknutím čísla 2 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zkontroluj, zda se po zobrazení seznamu úkolů znovu načte hlavní menu
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro zobrazení seznamu úkolů program zavolá funkci view_tasks() a seznam úkolů je zobrazen.
+	2. Po zobrazení seznamu úkolů se znovu zobrazí hlavní menu s nabídkou 4 funkcí.
+Výsledek testu:
+	1. Výběr funkce pro zobrazení seznamu úkolu je potvrzen. Zobrazí se číslovaný seznam úkolů, kdy každý úkol začíná na novém řádku.
+	2. Po zobrazení seznamu úkolů je znovu načteno hlavní menu se 4 funkcemi.
+Stav: Pass
+
+
+TM06: Zobrazení prázdného seznamu úkolů
+Popis: Ověření, že Task manager upozorní na prázdný seznam úkolů
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+	2. Seznam úkolů je prázdný - není v něm uložen žádný úkol.
+Kroky testu:
+	1. Vyber funkci "2. Zobrazit všechny úkoly" stisknutím čísla 2 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zkontroluj, zda se po zobrazení upozornění znovu načte hlavní menu.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro zobrazení seznamu úkolů program zavolá funkci view_tasks() a uživatel je upozorněn, že seznam úkolů je prázdný.
+	2. Po zobrazení upozornění na prázdný seznamu úkolů je znovu načteno hlavní menu se 4 funkcemi.
+Výsledek testu:
+	1. Výběr funkce pro zobrazení seznamu úkolu je potvrzen. Uživatel je upozorněn na to, že seznam je prázdný: Seznam úkolů je prázdný.
+	2. Po zobrazení upozornění je znovu načteno hlavní menu se 4 funkcemi.
+Stav: Pass
+
+
+TM07: Smazání úkolu
+Popis: Ověření, zda je možné smazat existující úkol.
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+	2. Seznam úkolů není prázdný - seznam již obsahuje několik úkolů.
+Kroky testu:
+	1. Vyber funkci "3. Odstranit úkol" stisknutím čísla 3 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zadej číslo existujícího úkolu, který chceš smazat a výběr potvrď klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro smazání úkolu program zavolá funkci delete_task(). Je zobrazen seznam existujících úkolů s výzvou pro zadání čísla úkolu, který chceme smazat.
+	2. Je zadáno existující číslo úkolu a výběr je potvrzen klávesou Enter. Je zobrazena informace o úspěšném smazání úkolu: Úkol 'název_úkolu - popis_úkolu' byl odstraněn.
+Výsledek testu:
+	1. Výběr funkce pro smazání úkolu je potvrzen a je zobrazen seznam již existujících úkolů. Společně se seznamem je zobrazena výzva pro zadání čísla úkolu, který chceme smazat.
+	2. Existující číslo úkolu je zadáno a potvrzeno klávesou Enter. Je zobrazena informace o úspěšném, smazání úkolu: Úkol 'Koupit chleba - celozrnný' byl odstraněn.
+Stav: Pass
+
+
+TM08: Výběr funkce "Smazat úkol" při prázdném seznamu úkolů
+Popis: 
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+	2. Seznam úkolů je prázdný - seznam neobsahuje několik úkolů.
+Kroky testu:
+	1. Vyber funkci "3. Odstranit úkol" stisknutím čísla 3 na klávesnici a potvrď výběr klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro smazání úkolu program zavolá funkci delete_task(). Program upozorní uživatele, že seznam úkolu je prázdný a že není k dispozici úkol ke smazání.
+Výsledek testu:
+	1. Výběr funkce pro smazání úkolu je potvrzen a uživatel je informován, že není k dispozici žádný úkol pro smazání.
+Stav: Pass
+
+
+TM09: Smazání neexistujícího úkolu
+Popis: Ověření, že pokud uživatel při pokusu o smazání úkolu zadá číslo úkolu, které neexistuje, program ho upozorní a umožní mu výběr zadat znovu.
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+	2. Seznam úkolů není prázdný - seznam již obsahuje několik úkolů.
+Kroky testu:
+	1. Vyber funkci "3. Odstranit úkol" stisknutím čísla 3 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zadej číslo úkolu, který neexistuje (není na seznamu) a výběr potvrď klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro smazání úkolu program zavolá funkci delete_task(). Je zobrazen seznam existujících úkolů s výzvou pro zadání čísla úkolu, který chceme smazat.
+	2. Po zadání čísla neexistujícího úkolu program upozorní uživatele, že bylo zadáno číslo úkolu, který neexistuje a vyzve ho, aby číslo zadal znovu.
+Výsledek testu:
+	1. Výběr funkce pro smazání úkolu je potvrzen a je zobrazen seznam již existujících úkolů. Společně se seznamem je zobrazena výzva pro zadání čísla úkolu, který chceme smazat.
+	2. Číslo neexistujícího úkolu je zadáno a potvrzeno. Je zobrazeno upozornění, že dané číslo úkolu neexistuje a zobrazí se výzva pro opětovné zadání čísla. Výzva se zobrazuje, dokud 	uživatel nezadá číslo úkolu, který existuje.
+Stav: Pass
+
+
+TM010: Smazání úkolu - neplatný vstup
+Popis: Ověření, že pokud uživatel při pokusu o smazání úkolu zadá znak nebo písmeno místo čísla, program ho na to upozorní a umožní mu zadat číslo úkolu znovu.
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+	2. Seznam úkolů není prázdný - seznam již obsahuje několik úkolů.
+Kroky testu:
+	1. Vyber funkci "3. Odstranit úkol" stisknutím čísla 3 na klávesnici a potvrď výběr klávesou Enter.
+	2. Zadej libovolný znak nebo písmeno a výběr potvrď klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru funkce pro smazání úkolu program zavolá funkci delete_task(). Je zobrazen seznam existujících úkolů s výzvou pro zadání čísla úkolu, který chceme smazat.
+	2. Po zadání neplatného vstupu, znaku či písmena, se zobrazí upozornění, že uživatel zadal neplatný vstup a vyzve uživatele, aby znovu zadal existující číslo úkolu.
+Výsledek testu:
+	1. Výběr funkce pro smazání úkolu je potvrzen a je zobrazen seznam již existujících úkolů. Společně se seznamem je zobrazena výzva pro zadání čísla úkolu, který chceme smazat.
+	2. Neplatný vstup je zadán a potvrzen. Je zobrazeno upozornění, že byl zadán neplatný vstup a program vyzve uživatele, aby zadal číslo existujícího úkolu znovu.
+Stav: Pass
+
+
+TM011: Ukončení programu
+Popis: Ověření, že lze program ukončit
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+Kroky testu: 
+	1. Vyber možnost "4. Ukončit program" stisknutím čísla 4 na klávesnici a potvrď výběr klávesou Enter.
+Očekávaný výsledek:
+	1. Po potvrzení výběru ukončení programu se program úspěšně ukončí.
+Výsledek testu:
+	1. Program je úspěšně ukončen.
+Stav: Pass
+
+
+TM12: Výběr neplatné funkce
+Popis: Ověření, že je uživatel upozorněn na vybrání neplatné funkce z hlavního menu.
+Vstupní podmínky:
+	1. Program Task manager je spuštěn a zobrazuje hlavní menu s nabídkou funkcí (1. Přidat úkol, 2. Zobrazit úkoly, 3. Smazat úkol a 4. Ukončit program).
+Kroky testu:
+	1. Je zadán neplatný vstup - znak, písmeno nebo číslo neexistující funkce - který je potvrzen klávesou Enter.
+Očekávaný výsledek:
+	1. Program upozorní uživatele, že byla vybrána neplatná funkce a nechá uživatele výběr zopakovat.
+Výsledek testu:
+	1. Po zadání neplatného vstupu je zobrazeno upozornění, že byl zadán neplatný vstup a je zobrazena výzva pro opětovné zadání existující funkce. 
+Stav: Pass
+
