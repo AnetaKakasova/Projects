@@ -1,0 +1,7 @@
+View tasks 
+-> ošetřit, že když v tabulce nebude žádný task, tak mi to řekne
+
+
+
+Funkce Create_table_if_not_exist
+-> zjistit, co je za try
