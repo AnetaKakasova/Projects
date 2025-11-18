@@ -1,7 +1,9 @@
-View tasks 
--> ošetřit, že když v tabulce nebude žádný task, tak mi to řekne
+V případě, že se nepovede připojit k databázi, má skočit chyba. Momentální řešení connection ale hodí error a program nefunguje
+Potřeba na začátku udělat změnu
 
+    conn = pripojeni_db()
+    vytvoreni_tabulky(conn)
+    function_selection = hlavni_menu()
 
-
-Funkce Create_table_if_not_exist
--> zjistit, co je za try
+    -> první řádek OK, ale zbylé 2 musím dát jinám! V případě, že se k databázi nepřipojím, tak pak nemůžu zkoušet vytvořit tabulku
+    -> Pokud se nepřipojím, nedává smysl zobrazit hlavní menu
