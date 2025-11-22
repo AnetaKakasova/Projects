@@ -35,15 +35,8 @@ def create_table(conn):
         conn.close()
 
 
-# funkce pro zobrazení hlavního menu s výběrem ze 4 možností
-def main_menu():
-    print("Správce úkolů - hlavní menu\n1. Přidat nový úkol\n2. Zobrazit všechny úkoly\n3. Aktualizovat úkol \n4. Odstranit úkol\n5. Konec programu")
-    function = input("Vyberte možnost (1-5): ")
-    return function 
-
-
 # tato funkce slouží pro vložení nového úkolu
-def add_task(conn):
+def add_task(conn, task_name, task_description):
     cursor = conn.cursor(buffered=True)
     if not task_name or not task_description:
         print("❌ Chyba, název úkolu ani popisek nesmí být prázdný!")
@@ -72,33 +65,25 @@ def view_tasks(conn):
 
 
 def update_task(conn, choosen_task, choosen_state):
-    tasks_list = []
     cursor = conn.cursor(buffered=True)
-    states = ("Nezahájeno", "Probíhá")
-    cursor.execute("SELECT * FROM Tasks WHERE Task_state IN (%s, %s);", states)
-    for task in cursor.fetchall():
-        tasks_list.append(f'{task[0]}')
+    cursor.execute("SELECT * FROM Tasks")
 
-    if choosen_task.isnumeric():
-        if choosen_task not in tasks_list:
-            print("❌ Byl vybrán neexistující úkol!")
+    if choosen_task.isnumeric() is True:
+        if choosen_state =="1":
+            cursor.execute("UPDATE tasks SET Task_state = 'Probíhá' WHERE TaskID = %s;", (choosen_task,))
+            conn.commit()
+            print('\n✅ Status úkolu byl aktualizován.\n')
+        elif choosen_state == "2":
+            cursor.execute("UPDATE tasks SET Task_state = 'Hotovo' WHERE TaskID = %s;", (choosen_task,))
+            conn.commit()
+            print('\n✅ Status úkolu byl aktualizován.\n')
         else:
-            if choosen_state == "1":
-                cursor.execute("UPDATE tasks SET Task_state = %s WHERE TaskID = %s;", ("Probíhá", choosen_task))
-                conn.commit()
-                print("✅ Stav úkolu byl úspěšně změněn na: Probíhá")
-            elif choosen_state == "2":
-                cursor.execute("UPDATE tasks SET Task_state = %s WHERE TaskID = %s;", ("Hotovo", choosen_task))
-                conn.commit()
-                print("✅ Stav úkolu byl úspěšně změněn na: Hotovo")
-            else:
-                print("❌ Byla vybrána neplatná možnost!")
-    else: 
-        print("❌ Byl zadán neplatný vstup!")
+            print('\n❌ Chybná volba nového stavu.\n')
+    else:
+        print("❌ Chybná volba ID úkolu.\n")
 
     cursor.close()
     conn.close()
-
 
 # tato funkce je pro smazání úkolu
 def delete_task(conn, choosen_task):
@@ -117,41 +102,49 @@ def delete_task(conn, choosen_task):
     cursor.close()
     conn.close()
 
-
-while True:
-
-    conn = connection()
-    create_table(conn)
-    function_selection = main_menu()
+# funkce pro zobrazení hlavního menu s výběrem ze 4 možností + volání vybrané funkce
+def main_menu():
+    while True:
+        print("Správce úkolů - hlavní menu\n1. Přidat nový úkol\n2. Zobrazit všechny úkoly\n3. Aktualizovat úkol \n4. Odstranit úkol\n5. Konec programu")
+        function_selection = input("Vyberte možnost (1-5): ")
     
 
-    if function_selection == "1":
-        conn = connection()
-        task_name = input("Zadejte název úkolu: ")
-        task_description = input("Zadejte popis úkolu: ")
-        add_task(conn)
-    elif function_selection == "2":
-        conn = connection()
-        view_tasks(conn)
-    elif function_selection == "3":
-        conn = connection()
-        cursor = conn.cursor(buffered=True)
-        cursor.execute("SELECT * FROM Tasks;")
-        for task in cursor.fetchall():
-            print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}")
-        choosen_task = input("Zadejte ID úkolu, který chcete aktualizovat: ")
-        choosen_state = input("Vyberte stav, který chcete úkolu přiřadit:\n1. Probíhá\n2. Hotovo\nVybraný stav: ")
-        update_task(conn, choosen_task, choosen_state)
-    elif function_selection == "4":
-        conn = connection()
-        cursor = conn.cursor(buffered=True)
-        cursor.execute("SELECT * FROM Tasks;")
-        for task in cursor.fetchall():
-            print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}")
-        choosen_task = input("Zadejte ID úkolu, který chcete smazat: ")
-        delete_task(conn, choosen_task)
-    elif function_selection == "5":
-        exit("Konec programu.")
+        if function_selection == "1":
+            conn = connection()
+            task_name = input("Zadejte název úkolu: ")
+            task_description = input("Zadejte popis úkolu: ")
+            add_task(conn, task_name, task_description)
+        elif function_selection == "2":
+            conn = connection()
+            view_tasks(conn)
+        elif function_selection == "3":
+            conn = connection()
+            cursor = conn.cursor(buffered=True)
+            cursor.execute("SELECT * FROM Tasks;")
+            for task in cursor.fetchall():
+                print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}")
+            choosen_task = input("Zadejte ID úkolu, který chcete aktualizovat: ")
+            choosen_state = input("Vyberte stav, který chcete úkolu přiřadit:\n1. Probíhá\n2. Hotovo\nVybraný stav: ")
+            update_task(conn, choosen_task, choosen_state)
+        elif function_selection == "4":
+            conn = connection()
+            cursor = conn.cursor(buffered=True)
+            cursor.execute("SELECT * FROM Tasks;")
+            for task in cursor.fetchall():
+                print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}")
+            choosen_task = input("Zadejte ID úkolu, který chcete smazat: ")
+            delete_task(conn, choosen_task)
+        elif function_selection == "5":
+            exit("Konec programu.")
+        else:
+            print("Byla vybrána neplatná funkce. Zadejte prosím platnou možnost: ")
+
+# Vytvoření tabulky, pokud neexistuje + spuštění výběrz funkce
+if __name__ == '__main__':
+    conn = connection()
+    if conn is not None:
+        print("Připojení OK")
+        create_table(connection())
+        main_menu()
     else:
-        print("Byla vybrána neplatná funkce. Zadejte prosím platnou možnost: ")
-        continue
+        print("Připojení selhalo")
