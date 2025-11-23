@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector.connection import MySQLConnection, Error
 
-# vytvoření připojení k databázi
+# vytvoření připojení k databázi + chybová hláška v případě, že připojení selže
 def connection() ->MySQLConnection | None:
     try: 
         conn = mysql.connector.connect(
@@ -17,7 +17,7 @@ def connection() ->MySQLConnection | None:
         return None
 
 
-# tato funkce má za úkol vytvořit tabulku pro úkoly
+# funkce pro vytvoření tabulky tasks v případě, že ještě neexistuje
 def create_table(conn):
     cursor = conn.cursor(buffered=True)
     try:
@@ -35,7 +35,7 @@ def create_table(conn):
         conn.close()
 
 
-# tato funkce slouží pro vložení nového úkolu
+# funkce pro přidání nového úkolu + ověření prázdného vstupu
 def add_task(conn, task_name, task_description):
     cursor = conn.cursor(buffered=True)
     if not task_name or not task_description:
@@ -48,7 +48,7 @@ def add_task(conn, task_name, task_description):
     conn.close()
 
 
-# funkce pro zobrazení úkolů v databázi Tasks
+# funkce pro zobrazení úkolů
 def view_tasks(conn):
     cursor = conn.cursor(buffered=True)
     states = ("Nezahájeno", "Probíhá")
@@ -64,6 +64,7 @@ def view_tasks(conn):
     conn.close()
 
 
+# ˇfunkce pro aktualizaci stavu úkolu + ověření chybného výběru
 def update_task(conn, choosen_task, choosen_state):
     cursor = conn.cursor(buffered=True)
     cursor.execute("SELECT * FROM Tasks")
@@ -85,7 +86,7 @@ def update_task(conn, choosen_task, choosen_state):
     cursor.close()
     conn.close()
 
-# tato funkce je pro smazání úkolu
+# tato funkce je pro smazání úkolu + ověření, že úkol existuje
 def delete_task(conn, choosen_task):
     tasks_list = []
     cursor = conn.cursor(buffered=True)
@@ -139,11 +140,11 @@ def main_menu():
         else:
             print("Byla vybrána neplatná funkce. Zadejte prosím platnou možnost: ")
 
-# Vytvoření tabulky, pokud neexistuje + spuštění výběrz funkce
+
+# Ověření, zda došlo k úspěšnému připojení. Podkud ano, spustí se funkce pro vytvoření tabulky a spuštění hlavního menu.
 if __name__ == '__main__':
     conn = connection()
     if conn is not None:
-        print("Připojení OK")
         create_table(connection())
         main_menu()
     else:
