@@ -58,32 +58,27 @@ def add_task_db(conn, task_name, task_description):
     conn.commit()
     cursor.close()
 
-
+# funkce pro zobrazení úkolů + filtr pro zobrazení všech úkolů nebo jen nezahájených a probíhajících
+# filr je později využit i pro zobrazení úkolů při aktualizaci nebo mazání
 def view_tasks(conn, tasks_filter):
     cursor = conn.cursor(buffered=True)
-    while True:
-        cursor.execute("SELECT * FROM Tasks")
-        if cursor.fetchone() is not None:
-            if tasks_filter == "1":
-                cursor.execute("SELECT * FROM Tasks")
-                for task in cursor.fetchall():
-                    print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
-                break
-            elif tasks_filter == "2":
-                cursor.execute("SELECT * FROM Tasks WHERE Task_state = 'Probíhá'")
-                for task in cursor.fetchall():
-                    print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
-                cursor.execute("SELECT * FROM tasks WHERE Task_state = 'Nezahájeno'")
-                for task in cursor.fetchall():
-                    print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
-                break    
-            else:
-                print('\n❌ Neplatný výběr filtru.\n')
-                continue
+    cursor.execute("SELECT * FROM Tasks")
+    if cursor.fetchone() is not None:
+        if tasks_filter == "1":
+            cursor.execute("SELECT * FROM Tasks")
+            for task in cursor.fetchall():
+                print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
+        elif tasks_filter == "2":
+            cursor.execute("SELECT * FROM Tasks WHERE Task_state = 'Probíhá'")
+            for task in cursor.fetchall():
+                print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
+            cursor.execute("SELECT * FROM tasks WHERE Task_state = 'Nezahájeno'")
+            for task in cursor.fetchall():
+                print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
         else:
-            print('\nDatabáze je prázdná.\n')
-            break
-
+            print('\n❌ Neplatný výběr filtru.\n')
+    else:
+        print('\nDatabáze je prázdná.\n')
     cursor.close()
 
 
@@ -104,7 +99,7 @@ def update_task(conn, choosen_task, choosen_state):
         else:
             print('\n❌ Chybná volba nového stavu.\n')
     else:
-        print("❌ Chybná volba ID úkolu.\n")
+        print("\n❌ Chybná volba ID úkolu.\n")
 
     cursor.close()
 
@@ -133,7 +128,7 @@ def main_menu(conn):
         if function_selection == "1":
             add_task(conn)
         elif function_selection == "2":
-            tasks_filter = input("Vyberte úkoly, které chcete zobrazit:\n1.Zobrazit všechny úkoly.\n2.Zobrazit pouze nedokončené úkoly.\nZvolený filtr: ")
+            tasks_filter = input("Vyberte filtr úkolů:\n1. Zobrazit všechny úkoly.\n2. Zobrazit pouze nedokončené úkoly.\nČíslo zvoleného filtru: ")
             view_tasks(conn, tasks_filter)
         elif function_selection == "3":
             view_tasks(conn, tasks_filter = "2")
@@ -149,7 +144,7 @@ def main_menu(conn):
             conn.close()
             break
         else:
-            print("Byla vybrána neplatná funkce. Zadejte prosím platnou možnost: ")
+            print("\n❌ Byla vybrána neplatná funkce. Zadejte prosím platnou možnost: ")
 
 # načtení credentials z .env
 load_dotenv()
