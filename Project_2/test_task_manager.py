@@ -1,6 +1,6 @@
 import pytest
 import mysql.connector
-from  Improved_task_manager import add_task, update_task, delete_task
+from  Improved_task_manager import add_task, add_task_db, update_task, delete_task
 from test__init__ import create_testing_table, data_teardown
 from dotenv import load_dotenv
 import os
@@ -24,8 +24,8 @@ def testing_db_connection():
     )
 
 
-def test_positive_add_task(testing_db_connection):
-    add_task(testing_db_connection, "Název tasku 1", "Popis tasku 1")
+def test_positive__db(testing_db_connection):
+    add_task_db(testing_db_connection, "Název tasku 1", "Popis tasku 1")
 
     cursor = testing_db_connection.cursor()
     cursor.execute("SELECT * FROM tasks")
@@ -46,7 +46,7 @@ def test_negative_add_task(capsys, testing_db_connection):
 
 def test_positive_update_task(testing_db_connection):
 
-    add_task(testing_db_connection,"Název aktualizovaného tasku", "Popis aktualizovaného tasku")
+    add_task_db(testing_db_connection,"Název aktualizovaného tasku", "Popis aktualizovaného tasku")
     update_task(testing_db_connection,"1","2")
 
     cursor = testing_db_connection.cursor()
@@ -66,7 +66,7 @@ def test_negative_update_task(capsys,testing_db_connection):
 
 def test_positive_delete_task(testing_db_connection):
 
-    add_task(testing_db_connection, "Task pro smazani", "Testování smazání úkolu")
+    add_task_db(testing_db_connection, "Task pro smazani", "Testování smazání úkolu")
     delete_task(testing_db_connection,"1")
 
     cursor = testing_db_connection.cursor()

@@ -37,30 +37,53 @@ def create_table(conn):
     cursor.close()
 
 
-# funkce pro přidání nového úkolu + ověření prázdného vstupu
-def add_task(conn, task_name, task_description):
-    cursor = conn.cursor(buffered=True)
+# funkce pro přídán názvu a popisku úkolu + ověření vstupu
+# task_name a task_description jsou definované jako None z důvodu předání argumentů do automatizovaného testu - zůstane tím zachován i negativní test
+def add_task(conn, task_name=None, task_description=None):
+    if task_name is None:
+        task_name = input("Zadejte název úkolu: ")
+    if task_description is None:
+        task_description = input("Zadejte popis úkolu: ")
+
     if not task_name or not task_description:
-        print("❌ Chyba, název úkolu ani popisek nesmí být prázdný!\n")
+        print("\n❌ Chyba, název úkolu ani popisek nesmí být prázdný!\n")
     else:
-        cursor.execute("INSERT INTO Tasks (Task_name, Task_description) VALUES (%s, %s);", (task_name, task_description))
-        print("✅ Úkol byl úspěšně uložen do databáze.\n")
+        add_task_db(conn, task_name, task_description)
+
+# funkce pro přidání úkolu do databáze
+def add_task_db(conn, task_name, task_description):
+    cursor = conn.cursor(buffered=True)
+    cursor.execute("INSERT INTO Tasks (Task_name, Task_description) VALUES (%s, %s);", (task_name, task_description))
+    print("\n✅ Úkol byl úspěšně uložen do databáze.\n")
     conn.commit()
     cursor.close()
 
 
-# funkce pro zobrazení úkolů
-def view_tasks(conn):
+def view_tasks(conn, tasks_filter):
     cursor = conn.cursor(buffered=True)
-    states = ("Nezahájeno", "Probíhá")
-    cursor.execute("SELECT TaskID, Task_name, Task_description, Task_state from Tasks WHERE Task_state IN (%s,%s)", states)
-    tasks = cursor.fetchall()
-    if not tasks:
-        print("Seznam úkolů je prázdný.\n")
-    else:
-        print("Seznam úkolů:")
-        for task in tasks:
-            print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]}")
+    while True:
+        cursor.execute("SELECT * FROM Tasks")
+        if cursor.fetchone() is not None:
+            if tasks_filter == "1":
+                cursor.execute("SELECT * FROM Tasks")
+                for task in cursor.fetchall():
+                    print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
+                break
+            elif tasks_filter == "2":
+                cursor.execute("SELECT * FROM Tasks WHERE Task_state = 'Probíhá'")
+                for task in cursor.fetchall():
+                    print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
+                cursor.execute("SELECT * FROM tasks WHERE Task_state = 'Nezahájeno'")
+                for task in cursor.fetchall():
+                    print(f'{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}')
+                break    
+            else:
+                print('\n❌ Neplatný výběr filtru.\n')
+                continue
+        else:
+            print('\nDatabáze je prázdná.\n')
+            break
+
     cursor.close()
 
 
@@ -108,28 +131,22 @@ def main_menu(conn):
         function_selection = input("Vyberte možnost (1-5): ")
         
         if function_selection == "1":
-            task_name = input("Zadejte název úkolu: ")
-            task_description = input("Zadejte popis úkolu: ")
-            add_task(conn, task_name, task_description)
+            add_task(conn)
         elif function_selection == "2":
-            view_tasks(conn)
+            tasks_filter = input("Vyberte úkoly, které chcete zobrazit:\n1.Zobrazit všechny úkoly.\n2.Zobrazit pouze nedokončené úkoly.\nZvolený filtr: ")
+            view_tasks(conn, tasks_filter)
         elif function_selection == "3":
-            cursor = conn.cursor(buffered=True)
-            cursor.execute("SELECT * FROM Tasks;")
-            for task in cursor.fetchall():
-                print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}")
+            view_tasks(conn, tasks_filter = "2")
             choosen_task = input("Zadejte ID úkolu, který chcete aktualizovat: ")
             choosen_state = input("Vyberte stav, který chcete úkolu přiřadit:\n1. Probíhá\n2. Hotovo\nVybraný stav: ")
             update_task(conn, choosen_task, choosen_state)
         elif function_selection == "4":
-            cursor = conn.cursor(buffered=True)
-            cursor.execute("SELECT * FROM Tasks;")
-            for task in cursor.fetchall():
-                print(f"{task[0]} - {task[1]} - {task[2]} - {task[3]} - {task[4]}")
+            view_tasks(conn, tasks_filter = "1")
             choosen_task = input("Zadejte ID úkolu, který chcete smazat: ")
             delete_task(conn, choosen_task)
         elif function_selection == "5":
             print("Konec programu.")
+            conn.close()
             break
         else:
             print("Byla vybrána neplatná funkce. Zadejte prosím platnou možnost: ")
