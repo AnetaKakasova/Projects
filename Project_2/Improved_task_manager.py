@@ -115,7 +115,7 @@ def delete_task(conn, choosen_task):
     else: 
         cursor.execute("DELETE FROM Tasks WHERE TaskID = %s;", (choosen_task,))
         conn.commit()
-        print("✅ Úkol byl úspěšně smazán.")
+        print("\n✅ Úkol byl úspěšně smazán.\n")
     cursor.close()
 
 # funkce pro zobrazení hlavního menu s výběrem ze 4 možností + volání vybrané funkce
