@@ -4,14 +4,13 @@ from dotenv import load_dotenv
 import os
 
 
-# vytvoření připojení k databázi + chybová hláška v případě, že připojení selže
+# vytvoření připojení + chybová hláška v případě, že připojení selže
 def connection() ->MySQLConnection | None:
     try: 
         conn = mysql.connector.connect(
             host=os.getenv("DB_TM_HOST"),
             user=os.getenv("DB_TM_USER"),
             password=os.getenv("DB_TM_PASSWORD"),
-            # database=os.getenv("DB_TM_NAME")
             )
         return conn
     except Error as err:
