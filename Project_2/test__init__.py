@@ -1,16 +1,23 @@
 import mysql.connector
+import pytest
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # vytvoření testovací tabulky
 def create_testing_table():
     conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="1111",
-            database="task_manager_test"
-    )
-
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD")
+        )
+    
     cursor = conn.cursor()
-    cursor.execute("DROP TABLE IF EXISTS tasks")
+    cursor.execute("CREATE DATABASE IF NOT EXISTS Test_task_manager")
+    conn.database = "Test_task_manager"
+
+    cursor.execute("DROP TABLE IF EXISTS Tasks")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Tasks (
                 TaskID INT PRIMARY KEY AUTO_INCREMENT,
@@ -28,13 +35,13 @@ def create_testing_table():
 # smazání testovací tabulky
 def data_teardown():
     conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="1111",
-            database="task_manager_test"
+            host=os.getenv("DB_HOST"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database="Test_task_manager"
     )
     cursor = conn.cursor()
-    cursor.execute("DROP TABLE IF EXISTS tasks")
+    cursor.execute("DROP TABLE IF EXISTS Tasks")
 
 if __name__ == '__main__':
     create_testing_table()
